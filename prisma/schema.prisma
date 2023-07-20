@@ -22,7 +22,7 @@ model User {
   lastName  String?
   Bookmarks Bookmark[]
 
-  @@map("users")
+  @@map("Users")
 }
 
 model Bookmark {
@@ -37,5 +37,5 @@ model Bookmark {
   User   User @relation(fields: [userId], references: [id])
   userId Int
 
-  @@map("bookmarks")
+  @@map("Bookmarks")
 }
