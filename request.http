@@ -11,7 +11,7 @@ POST {{host}}auth/signup
 Content-Type: application/json
 
 {
-    "email":"test@email.com",
+    "email":"test2@email.com",
     "password":"1234"
 }
 
