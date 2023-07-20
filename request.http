@@ -1,0 +1,13 @@
+POST {{baseURL}}auth/signin
+Content-Type: application/json
+
+{}
+
+###
+
+POST {{baseURL}}auth/signup
+Content-Type: application/json
+
+{}
+
+###
