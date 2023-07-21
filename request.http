@@ -1,17 +1,20 @@
-@host= http://localhost:3333/
+#@host= http://localhost:3333/
 
 
-POST {{host}}auth/signin
-Content-Type: application/json
-
-{}
-
-###
-POST {{host}}auth/signup
+POST {{baseURL}}auth/signin
 Content-Type: application/json
 
 {
-    "email":"test2@email.com",
+  "email": "test@email.com",
+  "password": "1234"
+}
+
+###
+POST {{baseURL}}auth/signup
+Content-Type: application/json
+
+{
+    "email":"test@email.com",
     "password":"1234"
 }
 
