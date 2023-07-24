@@ -19,3 +19,7 @@ Content-Type: application/json
 }
 
 ###
+GET {{baseURL}}users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdEBlbWFpbC5jb20iLCJpYXQiOjE2OTAyMzMyNDUsImV4cCI6MTY5MDIzNDE0NX0.u9KHWzxA7EzVofsoWuvxFe6OKUcXv7IHs83TM44z678
+
+###
