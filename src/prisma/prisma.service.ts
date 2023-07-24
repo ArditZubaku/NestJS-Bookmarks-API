@@ -14,4 +14,12 @@ export class PrismaService extends PrismaClient {
     });
     // console.log(config.get('DATABASE_URL'));
   }
+
+  cleanDB() {
+    // Using transactions to ensure order of procedures
+    return this.$transaction([
+      this.bookmark.deleteMany(),
+      this.user.deleteMany(),
+    ]);
+  }
 }
