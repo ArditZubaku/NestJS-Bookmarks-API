@@ -144,6 +144,12 @@ describe('App e2e', () => {
       });
     });
   });
-
+  describe('Bookmarks', () => {
+    describe('Create bookmark', () => {});
+    describe('Get bookmarks', () => {});
+    describe('Get bookmark by ID', () => {});
+    describe('Edit bookmark', () => {});
+    describe('Delete bookmark', () => {});
+  });
   it.todo('Should pass!');
 });
