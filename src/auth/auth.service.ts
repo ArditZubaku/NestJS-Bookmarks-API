@@ -36,7 +36,7 @@ export class AuthService {
       user.hash,
       dto.password,
     );
-    // If password is incorrect, throw an exception]
+    // If password is incorrect, throw an exception
     if (!matchingPassword)
       throw new ForbiddenException(
         'Incorrect password!',
@@ -71,9 +71,9 @@ export class AuthService {
       return this.signToken(user.id, user.email);
     } catch (error) {
       if (
+        error.code === 'P2002' &&
         error instanceof
-          PrismaClientKnownRequestError &&
-        error.code === 'P2002'
+          PrismaClientKnownRequestError
       ) {
         throw new ForbiddenException(
           'Try another email, a user with this email already exists!',

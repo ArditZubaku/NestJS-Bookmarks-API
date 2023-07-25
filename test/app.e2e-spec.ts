@@ -9,6 +9,11 @@ import { PrismaService } from '../src/prisma/prisma.service';
 import * as pactum from 'pactum';
 import { AuthDto } from '../src/auth/dto';
 import { EditUserDto } from '../src/user/dto';
+import {
+  CreateBookmarkDto,
+  EditBookmarkDto,
+} from '../src/bookmark/dto';
+
 describe('App e2e', () => {
   let app: INestApplication;
   let prisma: PrismaService;
@@ -145,11 +150,119 @@ describe('App e2e', () => {
     });
   });
   describe('Bookmarks', () => {
-    describe('Create bookmark', () => {});
-    describe('Get bookmarks', () => {});
-    describe('Get bookmark by ID', () => {});
-    describe('Edit bookmark', () => {});
-    describe('Delete bookmark', () => {});
+    describe('Get empty bookmarks', () => {
+      it('Should get bookmarks', () => {
+        return pactum
+          .spec()
+          .get('/bookmarks')
+          .withHeaders({
+            Authorization: `Bearer $S{user_access_token}`, //$S - Pactum syntax
+          })
+          .expectStatus(HttpStatus.OK)
+          .expectBody([])
+          .inspect();
+      });
+    });
+
+    describe('Create bookmark', () => {
+      it('Should create bookmark', () => {
+        const dto: CreateBookmarkDto = {
+          description: 'Bookmark description',
+          link: '/bookmark/link',
+          title: 'Bookmark title',
+        };
+        return pactum
+          .spec()
+          .post('/bookmarks/new')
+          .withHeaders({
+            Authorization:
+              'Bearer $S{user_access_token}',
+          })
+          .withBody(dto)
+          .expectStatus(HttpStatus.CREATED)
+          .stores('bookmarkID', 'id');
+      });
+    });
+    describe('Get bookmarks', () => {
+      it('Should get bookmarks', () => {
+        return pactum
+          .spec()
+          .get('/bookmarks')
+          .withHeaders({
+            Authorization: `Bearer $S{user_access_token}`,
+          })
+          .expectStatus(HttpStatus.OK)
+          .expectJsonLength(1); // Should have at least 1 element
+      });
+    });
+    describe('Get bookmark by ID', () => {
+      it('Should get bookmark by ID ', () => {
+        return pactum
+          .spec()
+          .get('/bookmarks/{id}')
+          .withPathParams('id', '$S{bookmarkID}')
+          .withHeaders({
+            Authorization:
+              'Bearer $S{user_access_token}',
+          })
+          .expectStatus(HttpStatus.OK)
+          .expectBodyContains('$S{bookmarkID}');
+      });
+    });
+    describe('Edit bookmark', () => {
+      it('Should edit bookmark', () => {
+        const dto: EditBookmarkDto = {
+          description:
+            'Edited bookmark description',
+          link: 'Edited /bookmark/link',
+          title: 'Edited bookmark title',
+        };
+        return pactum
+          .spec()
+          .patch('/bookmarks/edit/{id}')
+          .withBody(dto)
+          .withPathParams({
+            id: '$S{bookmarkID}',
+          })
+          .withHeaders({
+            Authorization:
+              'Bearer $S{user_access_token}',
+          })
+          .expectStatus(HttpStatus.OK)
+          .expectBodyContains(dto.title)
+          .expectBodyContains(dto.description);
+      });
+    });
+    describe('Delete bookmark', () => {
+      it('Should delete bookmark', () => {
+        return pactum
+          .spec()
+          .delete('/bookmarks/{id}')
+          .withPathParams({
+            id: '$S{bookmarkID}',
+          })
+          .withHeaders({
+            Authorization:
+              'Bearer $S{user_access_token}',
+          })
+          .expectStatus(HttpStatus.NO_CONTENT)
+          .expectBody('');
+      });
+      it('Should get empty bookmarks', () => {
+        return (
+          pactum
+            .spec()
+            .get('/bookmarks')
+            .withHeaders({
+              Authorization:
+                'Bearer $S{user_access_token}',
+            })
+            .expectStatus(HttpStatus.OK)
+            // .expectBody([]);
+            .expectJsonLength(0)
+        );
+      });
+    });
   });
   it.todo('Should pass!');
 });
